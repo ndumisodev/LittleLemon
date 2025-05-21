@@ -41,9 +41,28 @@ This is the backend API for the LittleLemon Restaurant application, built with D
 
 Here are the key API endpoints you can test using tools like **Insomnia**, **Postman**, or `curl`.
 
-### 1. Authentication
+### 1. User Management & Authentication
 
-The Booking API requires authentication. Users will first need to obtain a token.
+#### Create a New User
+
+* **Endpoint:** `/auth/users/`
+* **Method:** `POST`
+* **Authentication:** Not required.
+* **Body (JSON):**
+    ```json
+    {
+        "username": "newuser",
+        "password": "strongpassword123",
+        "email": "newuser@example.com"
+    }
+    ```
+* **Response:** The details of the newly created user (often including `id`, `username`, `email`).
+
+#### Obtain Authentication Token (Login)
+
+You have two options to obtain an authentication token:
+
+**Option 1: Using Django REST Framework's `authtoken` view**
 
 * **Endpoint:** `/api-token-auth/`
 * **Method:** `POST`
@@ -60,7 +79,27 @@ The Booking API requires authentication. Users will first need to obtain a token
         "token": "your_generated_token_string"
     }
     ```
-    * **Note:** Use this `token` in the `Authorization: Bearer <token>` header for all authenticated requests. In Insomnia, use the **Auth tab** and select **Bearer Token**, then paste the token.
+
+**Option 2: Using Djoser's login view**
+
+* **Endpoint:** `/auth/token/login/`
+* **Method:** `POST`
+* **Body (JSON):**
+    ```json
+    {
+        "username": "your_username",
+        "password": "your_password"
+    }
+    ```
+* **Response:** A JSON object containing the authentication `auth_token`.
+    ```json
+    {
+        "auth_token": "your_generated_token_string"
+    }
+    ```
+    *Note the key name `auth_token` instead of `token`.*
+
+* **Important Note for both options:** Use the obtained token in the `Authorization: Bearer <token>` header for all subsequent authenticated requests. In Insomnia, navigate to the **Auth tab**, select **Bearer Token**, and paste the token string (e.g., `your_generated_token_string`).
 
 ---
 
