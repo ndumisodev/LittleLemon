@@ -2,6 +2,57 @@
 
 This is the backend API for the LittleLemon Restaurant application, built with Django and Django REST Framework (DRF).
 
+
+
+## Database Setup
+
+This project uses a MySQL database. Before running the project, you'll need to set up your own database.
+
+1.  **Create a MySQL Database:**
+    * Using your MySQL client (e.g., MySQL Workbench, `mysql` command-line client, or phpMyAdmin), create a new database.
+    * It's recommended to name it `LittleLemon` to match the default `settings.py` configuration, but you can choose another name if you update `settings.py` accordingly.
+
+    ```sql
+    CREATE DATABASE LittleLemon;
+    ```
+
+2.  **Create a MySQL User and Grant Permissions:**
+    * **Do NOT use the `admindjango` user and `employee@123!` password from my `settings.py`.** These are for my local setup and should not be shared or used in your environment.
+    * Create a **new dedicated MySQL user** with a strong, unique password for this database.
+    * Grant this user all privileges on your newly created `LittleLemon` database.
+
+    ```sql
+    CREATE USER 'your_db_user'@'localhost' IDENTIFIED BY 'your_strong_password';
+    GRANT ALL PRIVILEGES ON LittleLemon.* TO 'your_db_user'@'localhost';
+    FLUSH PRIVILEGES;
+    ```
+    *Replace `'your_db_user'` and `'your_strong_password'` with your chosen credentials.*
+
+3.  **Update `settings.py`:**
+    * Open `littlelemon/settings.py`.
+    * Locate the `DATABASES` section.
+    * Update the `'USER'` and `'PASSWORD'` fields with the credentials for the database user you just created.
+
+    ```python
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'LittleLemon', # Keep this name or change if your DB name is different
+            'USER': 'your_db_user', # <-- UPDATE THIS
+            'PASSWORD': 'your_strong_password', # <-- UPDATE THIS
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+            'OPTIONS': {
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+            }
+        }
+    }
+    ```
+
+---
+
+
+
 ## Setup & Running the Project
 
 1.  **Clone the repository:**
@@ -36,6 +87,7 @@ This is the backend API for the LittleLemon Restaurant application, built with D
     The API will be available at `http://127.0.0.1:8000/`.
 
 ---
+
 
 ## API Endpoints for Testing
 
